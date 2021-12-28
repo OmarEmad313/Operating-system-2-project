@@ -1,6 +1,8 @@
 
 #include <iostream>
 #include <string>
+#include<vector>
+#include<algorithm>
 using namespace std;
 
 
@@ -186,8 +188,18 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
 
 
     }
+    
+
+    
     if (algorithm == "LRU") {
+        
+        
+
+        //first free frames done with fifo
         for (int j = refrenceStringPtr; j < refrenceStringLength; ++j) {
+
+
+            //check for page fault
             bool pageFaultOccured = true;
             for (int i = 0; i < freeFrames; ++i) {
                 if (frames[i] == refrenceString[j]) {
@@ -199,7 +211,12 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
 
             if (pageFaultOccured == false) {
                 continue;
-            } 
+            }
+
+
+
+
+            //Page fault 
             cout << "page fault occured and the current page  = " << refrenceString[j] << endl;
             frames[framesPtr] = refrenceString[j];
             ++framesPtr;
@@ -209,110 +226,46 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
             ++pageFaults;
             if (pageFaults == freeFrames) { refrenceStringPtr = ++j; break; }
         }
-        //optimal:
-        for (int j = refrenceStringPtr; j < refrenceStringLength; ++j) {
-            //case no page fault happens
-            bool pageFaultOccured = true;
-            for (int i = 0; i < freeFrames; ++i) {
-                if (frames[i] == refrenceString[j]) {
-                    cout << "NO page fault and current page  = " << refrenceString[j] << endl;
-                    pageFaultOccured = false;
-                    break;
-                }
-            }
-            if (pageFaultOccured == false) {
-                continue;
-            }
-
-
-
-
-
-
-
-            //case page fault happens
-            cout << "page fault occured and current page  = " << refrenceString[j] << endl;
-            int* usdInFuture = new int[freeFrames];
-            for (int z = 0; z < freeFrames; ++z) {
-                usdInFuture[z] = -1;
-            }
-
-            int arrayPtr = -1;
-            int indexAfterPtr = j;
-            indexAfterPtr++;
-            //now we check to see what frame we should replace
-            for (int i = indexAfterPtr; i < refrenceStringLength; ++i) {
-
-                bool inTheFutureArray = false;
-                bool inTheFramesArray = false;
-
-                for (int k = 0; k < freeFrames; ++k) {
-                    if (frames[k] == refrenceString[i]) {
-                        inTheFramesArray = true;
+            //Lru:
+            for (int j = refrenceStringPtr; j < refrenceStringLength; ++j) {
+                //case no page fault happens
+                bool pageFaultOccured = true;
+                for (int i = 0; i < freeFrames; ++i) {
+                    if (frames[i] == refrenceString[j]) {
+                        cout << "NO page fault and current page  = " << refrenceString[j] << endl;
+                        pageFaultOccured = false;
                         break;
                     }
                 }
-                if (inTheFramesArray == true) {
-                    for (int l = 0;l < freeFrames;++l) {
-                        if (usdInFuture[l] == refrenceString[i]) {
-                            inTheFutureArray = true;
-                        }
-                    }
-                }
-                else {
+                if (pageFaultOccured == false) {
                     continue;
-                }
+                }                
+                //case page fault happens
+                cout << "page fault occured and current page  = " << refrenceString[j] << endl;
+                vector<int> recentlyUsedIndexs;
+                for (int i = j - 1;i >= 0;--i) {
+                    for (int k = 0;k < freeFrames;++k) {
+                        if (frames[k] == refrenceString[i]) {
+                            if (find(recentlyUsedIndexs.begin(), recentlyUsedIndexs.end(), k) != recentlyUsedIndexs.end()) {
+                                break;
+                            }
+                            recentlyUsedIndexs.push_back(k);
+                            break;
+                        }
 
-
-                if (inTheFutureArray == true)continue;
-                else {
-                    cout << "used in the future =" << refrenceString[i] << endl << endl;
-                    ++arrayPtr;
-                    usdInFuture[arrayPtr] = refrenceString[i];
-                }
-
-
-            }
-
-            int willNOtBeUsedFrame;
-            if (arrayPtr != freeFrames - 1) {
-                int firstToReplace;
-                bool available = false;
-                for (int q = 0;q < freeFrames;++q) {
-                    for (int s = 0;s < freeFrames;++s) {
-                        if (frames[q] == usdInFuture[s])available = true;
                     }
-                    if (available == false) {
-                        willNOtBeUsedFrame = frames[q];
-                        break;
-                    }
-                    available = false;
+                    if (recentlyUsedIndexs.size() == freeFrames)break;
+
                 }
+                frames[recentlyUsedIndexs[recentlyUsedIndexs.size() - 1]] = refrenceString[j];
+                ++pageFaults;
 
-            }
-            else {
-                willNOtBeUsedFrame = usdInFuture[arrayPtr];
+                
 
+                
             }
-
-            for (int k = 0; k < freeFrames; ++k) {
-                if (frames[k] == willNOtBeUsedFrame) {
-                    cout << "Frame to be replaced " << frames[k] << endl;
-                    frames[k] = refrenceString[j];
-                    break;
-                }
-            }
-            ++pageFaults;
-            delete[]usdInFuture;
+            
         }
-
-
-    }
-
-
-
-
-
 
 
     cout << pageFaults;
@@ -320,7 +273,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
 }
 
 
-int main() {
+    int main() {
 
     cout << "Enter Number of frame : ";
     int frameNumber, Stringlength;
