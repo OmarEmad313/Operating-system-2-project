@@ -30,7 +30,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
             bool pageFaultOccured = true;
             for (int i = 0; i < freeFrames; ++i) {
                 if (frames[i] == refrenceString[j]) {
-                    cout << "NO page fault and current page  = " << refrenceString[0] << endl;
+                    cout << "Current page  = " << refrenceString[j] <<" and no page fault" << endl;
                     pageFaultOccured = false;
                     break;
                 }
@@ -44,7 +44,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
 
 
             //Page fault 
-            cout << "page fault occured and the current page  = " << refrenceString[j] << endl;
+            cout << " The current page  = " << refrenceString[j]<< " and page fault occured" << endl;
             frames[framesPtr] = refrenceString[j];
             ++framesPtr;
             if (framesPtr > freeFrames - 1) {
@@ -66,7 +66,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
             bool pageFaultOccured = true;
             for (int i = 0; i < freeFrames; ++i) {
                 if (frames[i] == refrenceString[j]) {
-                    cout << "NO page fault and current page  = " << refrenceString[0] << endl;
+                    cout << "Current page  = " << refrenceString[0] << " and no page fault" << endl;
                     pageFaultOccured = false;
                     break;
                 }
@@ -80,7 +80,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
 
 
             //Page fault 
-            cout << "page fault occured and the current page  = " << refrenceString[j] << endl;
+            cout << " The current page  = " << refrenceString[j] << " and page fault occured" << endl;
             frames[framesPtr] = refrenceString[j];
             ++framesPtr;
             if (framesPtr > freeFrames - 1) {
@@ -95,7 +95,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
             bool pageFaultOccured = true;
             for (int i = 0; i < freeFrames; ++i) {
                 if (frames[i] == refrenceString[j]) {
-                    cout << "NO page fault and current page  = " << refrenceString[j] << endl;
+                    cout << "Current page  = " << refrenceString[j] << " and no page fault" << endl;
                     pageFaultOccured = false;
                     break;
                 }
@@ -111,7 +111,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
 
 
             //case page fault happens
-            cout << "page fault occured and current page  = " << refrenceString[j] << endl;
+            cout << " The current page  = " << refrenceString[j] << " and page fault occured" << endl;
             int* usdInFuture = new int[freeFrames];
             for (int z = 0; z < freeFrames; ++z) {
                 usdInFuture[z] = -1;
@@ -146,7 +146,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
 
                 if (inTheFutureArray == true)continue;
                 else {
-                    cout << "used in the future =" << refrenceString[i] << endl << endl;
+                    //cout << "used in the future =" << refrenceString[i] << endl << endl;
                     ++arrayPtr;
                     usdInFuture[arrayPtr] = refrenceString[i];
                 }
@@ -203,7 +203,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
             bool pageFaultOccured = true;
             for (int i = 0; i < freeFrames; ++i) {
                 if (frames[i] == refrenceString[j]) {
-                    cout << "NO page fault and current page  = " << refrenceString[0] << endl;
+                    cout << "Current page  = " << refrenceString[0] << " and no page fault" << endl;
                     pageFaultOccured = false;
                     break;
                 }
@@ -217,7 +217,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
 
 
             //Page fault 
-            cout << "page fault occured and the current page  = " << refrenceString[j] << endl;
+            cout << " The current page  = " << refrenceString[j] << " and page fault occured" << endl;
             frames[framesPtr] = refrenceString[j];
             ++framesPtr;
             if (framesPtr > freeFrames - 1) {
@@ -232,7 +232,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
                 bool pageFaultOccured = true;
                 for (int i = 0; i < freeFrames; ++i) {
                     if (frames[i] == refrenceString[j]) {
-                        cout << "NO page fault and current page  = " << refrenceString[j] << endl;
+                        cout << "Current page  = " << refrenceString[j] << " and no page fault" << endl;
                         pageFaultOccured = false;
                         break;
                     }
@@ -241,7 +241,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
                     continue;
                 }                
                 //case page fault happens
-                cout << "page fault occured and current page  = " << refrenceString[j] << endl;
+                cout << " The current page  = " << refrenceString[j] << " and page fault occured" << endl;
                 vector<int> recentlyUsedIndexs;
                 for (int i = j - 1;i >= 0;--i) {
                     for (int k = 0;k < freeFrames;++k) {
@@ -257,6 +257,7 @@ void pageReplacement(int freeFrames, int refrenceString[], string algorithm, int
                     if (recentlyUsedIndexs.size() == freeFrames)break;
 
                 }
+                cout << "Frame to be replaced " << frames[recentlyUsedIndexs[recentlyUsedIndexs.size() - 1]] << endl;
                 frames[recentlyUsedIndexs[recentlyUsedIndexs.size() - 1]] = refrenceString[j];
                 ++pageFaults;
 
